@@ -10,7 +10,7 @@ const command = args[0];
 
 function printBanner() {
   console.log("");
-  console.log("  \u{1F43E} claude-paws v0.1.0");
+  console.log("  \u{1F43E} paws v0.2.4");
   console.log("  Session dashboard for Claude Code");
   console.log("");
 }
@@ -18,10 +18,10 @@ function printBanner() {
 function printHelp() {
   printBanner();
   console.log("  Usage:");
-  console.log("    claude-paws          Start the dashboard server");
-  console.log("    claude-paws setup    Install hooks into Claude Code");
-  console.log("    claude-paws status   Check if hooks are installed");
-  console.log("    claude-paws help     Show this help message");
+  console.log("    paws               Start the dashboard server");
+  console.log("    paws setup         Install hooks into Claude Code");
+  console.log("    paws status        Check if hooks are installed");
+  console.log("    paws help          Show this help message");
   console.log("");
   console.log("  Options:");
   console.log("    --port, -p <port>    Port number (default: 3200)");

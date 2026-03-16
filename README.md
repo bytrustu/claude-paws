@@ -20,19 +20,19 @@ Node.js 18 이상이 필요해요.
 
 ```bash
 # 대시보드 시작
-claude-paws
+paws
 
 # 훅 설치 (npm install 시 자동 실행)
-claude-paws setup
+paws setup
 
 # 설치 상태 확인
-claude-paws status
+paws status
 
 # 포트 변경
-claude-paws --port 3300
+paws --port 3300
 
 # 브라우저 자동 열기 끄기
-claude-paws --no-open
+paws --no-open
 ```
 
 브라우저에서 http://localhost:3200 을 열면 돼요.
