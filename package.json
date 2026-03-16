@@ -1,0 +1,31 @@
+{
+  "name": "claude-paws",
+  "version": "0.1.0",
+  "description": "Cute session dashboard for Claude Code - monitor all your sessions with pixel mascots",
+  "type": "module",
+  "bin": {
+    "claude-paws": "./bin/claude-paws.mjs"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.mjs",
+    "start": "node lib/server.mjs"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "dashboard",
+    "session-monitor",
+    "cli",
+    "developer-tools"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "scripts/"
+  ]
+}
