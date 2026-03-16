@@ -29,7 +29,7 @@ const ok = (msg) => console.log(`  ok ${msg}`);
 
 export function checkStatus() {
   console.log("");
-  log("claude-paws status");
+  log("paws status");
   console.log("");
 
   if (!existsSync(CLAUDE_DIR)) {
@@ -41,7 +41,7 @@ export function checkStatus() {
   if (existsSync(HOOK_DEST)) {
     ok("session-tracker.sh installed");
   } else {
-    warn("session-tracker.sh not installed (run: claude-paws setup)");
+    warn("session-tracker.sh not installed (run: paws setup)");
   }
 
   if (existsSync(SETTINGS_FILE)) {
@@ -71,7 +71,7 @@ export function checkStatus() {
 
 export default function setup() {
   console.log("");
-  log("Setting up claude-paws...");
+  log("Setting up paws...");
   console.log("");
 
   if (!existsSync(CLAUDE_DIR)) {
@@ -136,8 +136,8 @@ export default function setup() {
   console.log("");
   log("Setup complete!");
   console.log("");
-  console.log("  Start:   claude-paws");
-  console.log("  Status:  claude-paws status");
+  console.log("  Start:   paws");
+  console.log("  Status:  paws status");
   console.log("");
 }
 
