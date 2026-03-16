@@ -1,110 +1,103 @@
 # claude-paws
 
-Cute session dashboard for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Monitor all your running sessions at a glance with pixel mascot characters.
+<div align="center">
 
-## Features
+https://github.com/user-attachments/assets/a9f89a6e-d0bd-4e23-9b08-53c397f2b2b9
 
-- **Real-time session monitoring** - See all Claude Code sessions across projects
-- **12 pixel mascot characters** - Cat, Dog, Rabbit, Bear, Penguin, Tiger, Lion, Alpaca, Fox, Hamster, Owl, Panda
-- **Walking pets** - Characters roam around your dashboard with speech bubbles
-- **Dark mode** - Toggle with `D` key or button
-- **Drag & resize cards** - Customize your layout (persisted in localStorage)
-- **Team agent visualization** - See agent team structure in modal when teams are active
-- **Session detail modal** - Click a card to see transcript timeline
-- **macOS notifications** - Get notified when sessions complete
-- **Keyboard shortcuts** - `D` dark mode, `E` edit mode, `1-5` columns, `Esc` close modal
-- **Character picker** - Choose your representative mascot
+</div>
 
-## Install
+Claude Code 세션을 한눈에 볼 수 있는 대시보드예요.
+지금 어떤 세션이 돌아가고 있는지, 픽셀 마스코트와 함께 실시간으로 확인할 수 있어요.
+
+## 이런 걸 할 수 있어요
+
+- **실시간 세션 모니터링** - 여러 프로젝트의 Claude Code 세션을 한 화면에서 확인해요
+- **12종 픽셀 마스코트** - 고양이, 강아지, 토끼, 곰, 펭귄, 호랑이, 사자, 알파카, 여우, 햄스터, 부엉이, 판다
+- **걸어다니는 펫** - 마스코트가 대시보드 위를 돌아다니며 말풍선을 띄워요
+- **다크 모드** - `D` 키 하나로 전환돼요
+- **드래그 & 리사이즈** - 카드 배치를 자유롭게 커스텀할 수 있어요 (localStorage에 저장)
+- **팀 에이전트 시각화** - 에이전트 팀이 활성화되면 모달에서 구조를 볼 수 있어요
+- **세션 상세 모달** - 카드를 클릭하면 트랜스크립트 타임라인이 나와요
+- **macOS 알림** - 세션이 끝나면 알림을 받을 수 있어요
+- **키보드 단축키** - `D` 다크 모드, `E` 편집 모드, `1-5` 컬럼 수, `Esc` 모달 닫기
+- **캐릭터 선택** - 나를 대표하는 마스코트를 고를 수 있어요
+
+## 설치
 
 ```bash
 npm install -g claude-paws
 ```
 
-Requires Node.js 18+.
+Node.js 18 이상이 필요해요.
 
-## Usage
+## 사용법
 
 ```bash
-# Start the dashboard
+# 대시보드 시작
 claude-paws
 
-# Install hooks (auto-runs on npm install)
+# 훅 설치 (npm install 시 자동 실행)
 claude-paws setup
 
-# Check installation status
+# 설치 상태 확인
 claude-paws status
 
-# Custom port
+# 포트 변경
 claude-paws --port 3300
 
-# Don't open browser automatically
+# 브라우저 자동 열기 끄기
 claude-paws --no-open
 ```
 
-Open http://localhost:3200 in your browser.
+브라우저에서 http://localhost:3200 을 열면 돼요.
 
-## How it works
+## 어떻게 동작하나요?
 
-claude-paws installs lightweight hooks into Claude Code's `~/.claude/settings.json` that track session events:
+claude-paws는 Claude Code의 `~/.claude/settings.json`에 가벼운 훅을 설치해요. 이 훅이 세션 이벤트를 추적해요.
 
-- `SessionStart` / `SessionEnd` - session lifecycle
-- `UserPromptSubmit` - user sends a message (session is "working")
-- `Stop` - Claude finishes responding (session is "waiting")
-- `Notification` - Claude needs attention
-- `SubagentStart` / `SubagentStop` - agent delegation tracking
+- `SessionStart` / `SessionEnd` - 세션 시작과 종료
+- `UserPromptSubmit` - 사용자가 메시지를 보냈을 때 (세션 "작업 중")
+- `Stop` - Claude가 응답을 마쳤을 때 (세션 "대기 중")
+- `Notification` - Claude가 주의를 필요로 할 때
+- `SubagentStart` / `SubagentStop` - 에이전트 위임 추적
 
-Session data is written to `~/.claude/dashboard/active/` as JSON files. The dashboard server reads these files and serves a web UI.
+세션 데이터는 `~/.claude/dashboard/active/`에 JSON 파일로 저장돼요. 대시보드 서버가 이 파일을 읽어서 웹 UI로 보여줘요.
 
-**No data leaves your machine.** Everything runs locally on `localhost`.
+**데이터는 외부로 전송되지 않아요.** 모든 것이 `localhost`에서 로컬로 동작해요.
 
-## Uninstall
+## 삭제
 
 ```bash
 npm uninstall -g claude-paws
 ```
 
-To remove hooks manually:
+훅을 수동으로 제거하려면:
 
 ```bash
-# Remove hook script
+# 훅 스크립트 삭제
 rm ~/.claude/hooks/session-tracker.sh
 
-# Remove dashboard data
+# 대시보드 데이터 삭제
 rm -rf ~/.claude/dashboard/
 ```
 
-Hooks in `~/.claude/settings.json` referencing `session-tracker.sh` can be safely removed.
+`~/.claude/settings.json`에서 `session-tracker.sh`를 참조하는 훅도 안전하게 제거할 수 있어요.
 
-## Screenshots
+## 설정
 
-### Light mode
-Dashboard showing active sessions with pixel mascots, status badges, and walking pet characters.
+대시보드 상태는 브라우저 localStorage에 저장돼요.
+- `claude-dash-layout` - 카드 순서, 크기, 컬럼 수
+- `claude-dash-theme` - 라이트/다크 테마
+- `claude-paws-global` - 대표 마스코트 선택
+- `claude-paws-mascots` - 세션별 마스코트 오버라이드
 
-### Dark mode
-Full dark theme support with adjusted colors for comfortable night coding.
+## 기술 스택
 
-### Team visualization
-When running agent teams, the modal shows team structure with member roles and task progress.
-
-### Character picker
-Choose your representative mascot from 12 pixel characters.
-
-## Configuration
-
-Dashboard state is stored in browser localStorage:
-- `claude-dash-layout` - card order, sizes, column count
-- `claude-dash-theme` - light/dark preference
-- `claude-paws-global` - representative mascot selection
-- `claude-paws-mascots` - per-session mascot overrides
-
-## Tech Stack
-
-- **Server**: Node.js (zero dependencies)
-- **Frontend**: Vanilla HTML/CSS/JS (embedded in server)
+- **Server**: Node.js (의존성 없음)
+- **Frontend**: Vanilla HTML/CSS/JS (서버에 내장)
 - **Hooks**: Bash + jq
 - **Font**: [Pretendard](https://github.com/orioncactus/pretendard)
 
-## License
+## 라이선스
 
 MIT
