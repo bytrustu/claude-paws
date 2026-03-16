@@ -10,7 +10,7 @@ const command = args[0];
 
 function printBanner() {
   console.log("");
-  console.log("  \u{1F43E} paws v0.2.4");
+  console.log("  \u{1F43E} paws v0.2.5");
   console.log("  Session dashboard for Claude Code");
   console.log("");
 }

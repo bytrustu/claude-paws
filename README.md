@@ -1,12 +1,24 @@
 # claude-paws
 
-Claude Code... 터미널 10개 열어두고 기억력으로 버티지 마세요.  
-12종 픽셀 동물들. 고양이, 펭귄, 알파카… 나를 대표할 캐릭터를 하나 고르세요.  
-지금 어떤 세션이 돌아가고 있는지, 한 화면에서 전부 봅니다. 클릭하면 해당 터미널로 바로 점프.  
-
 https://github.com/user-attachments/assets/eab8be0e-f19c-4390-ad71-a4c7effdbc25
 
+Claude Code 세션, 터미널 10개 열어두고 기억력으로 버티지 마세요.
+지금 어떤 세션이 돌아가고 있는지, 한 화면에서 전부 봅니다. 클릭하면 해당 터미널로 바로 점프.
 
+12종 픽셀 동물들. 고양이, 펭귄, 알파카… 나를 대표할 캐릭터를 하나 고르세요.
+
+## 이런 걸 할 수 있어요
+
+- 여러 프로젝트 세션을 한 화면에서 실시간으로 봐요
+- 카드에 마우스 올리면 터미널 아이콘이 나타나요. 누르면 바로 그 터미널로 이동
+- 필요 없는 세션은 카드 클릭해서 바로 삭제
+- 12종 픽셀 마스코트가 대시보드 위를 걸어다녀요. 가끔 말풍선도 띄워요
+- 세션 상태가 바뀌면 Toast 알림이 뜨고, 누르면 해당 세션으로 이동
+- `D` 누르면 다크 모드, `E` 누르면 편집 모드, `1-5`로 컬럼 수 조절
+- 카드를 드래그해서 원하는 대로 배치할 수 있어요
+- 카드 클릭하면 트랜스크립트 타임라인을 볼 수 있어요
+- 팀 에이전트가 돌고 있으면 구조도 같이 보여줘요
+- 세션 끝나면 macOS 알림도 받을 수 있어요
 
 ## 설치
 
@@ -14,7 +26,7 @@ https://github.com/user-attachments/assets/eab8be0e-f19c-4390-ad71-a4c7effdbc25
 npm install -g claude-paws
 ```
 
-Node.js 18 이상이 필요해요.
+Node.js 18 이상이면 돼요.
 
 ## 사용법
 
@@ -22,34 +34,26 @@ Node.js 18 이상이 필요해요.
 # 대시보드 시작
 paws
 
-# 훅 설치 (npm install 시 자동 실행)
+# hook 설치 (npm install 하면 자동으로 돼요)
 paws setup
 
 # 설치 상태 확인
 paws status
 
-# 포트 변경
+# 포트 바꾸기
 paws --port 3300
 
-# 브라우저 자동 열기 끄기
+# 브라우저 자동으로 안 열기
 paws --no-open
 ```
 
-브라우저에서 http://localhost:3200 을 열면 돼요.
+http://localhost:3200 으로 접속하면 돼요.
 
 ## 어떻게 동작하나요?
 
-claude-paws는 Claude Code의 `~/.claude/settings.json`에 가벼운 훅을 설치해요. 이 훅이 세션 이벤트를 추적해요.
+설치하면 `~/.claude/settings.json`에 hook이 하나 붙어요. 세션이 시작되거나 끝나거나 응답이 오면 `~/.claude/dashboard/active/`에 JSON으로 기록하고, 대시보드가 그걸 읽어서 보여주는 거예요.
 
-- `SessionStart` / `SessionEnd` - 세션 시작과 종료
-- `UserPromptSubmit` - 사용자가 메시지를 보냈을 때 (세션 "작업 중")
-- `Stop` - Claude가 응답을 마쳤을 때 (세션 "대기 중")
-- `Notification` - Claude가 주의를 필요로 할 때
-- `SubagentStart` / `SubagentStop` - 에이전트 위임 추적
-
-세션 데이터는 `~/.claude/dashboard/active/`에 JSON 파일로 저장돼요. 대시보드 서버가 이 파일을 읽어서 웹 UI로 보여줘요.
-
-**데이터는 외부로 전송되지 않아요.** 모든 것이 `localhost`에서 로컬로 동작해요.
+**데이터는 전부 로컬이에요. 외부로 나가는 건 없어요.**
 
 ## 업데이트
 
@@ -63,31 +67,20 @@ npm install -g claude-paws@latest
 npm uninstall -g claude-paws
 ```
 
-훅을 수동으로 제거하려면:
+hook까지 깔끔하게 지우려면:
 
 ```bash
-# 훅 스크립트 삭제
 rm ~/.claude/hooks/session-tracker.sh
-
-# 대시보드 데이터 삭제
 rm -rf ~/.claude/dashboard/
 ```
 
-`~/.claude/settings.json`에서 `session-tracker.sh`를 참조하는 훅도 안전하게 제거할 수 있어요.
-
-## 설정
-
-대시보드 상태는 브라우저 localStorage에 저장돼요.
-- `claude-dash-layout` - 카드 순서, 크기, 컬럼 수
-- `claude-dash-theme` - 라이트/다크 테마
-- `claude-paws-global` - 대표 마스코트 선택
-- `claude-paws-mascots` - 세션별 마스코트 오버라이드
+`~/.claude/settings.json`에서 `session-tracker.sh` 관련 항목도 지워주면 끝이에요.
 
 ## 기술 스택
 
 - **Server**: Node.js (의존성 없음)
 - **Frontend**: Vanilla HTML/CSS/JS (서버에 내장)
-- **Hooks**: Bash + jq
+- **Hook**: Bash + jq
 - **Font**: [Pretendard](https://github.com/orioncactus/pretendard)
 
 ## 라이선스
