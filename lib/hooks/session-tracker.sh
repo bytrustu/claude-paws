@@ -187,6 +187,17 @@ handle_subagent_stop() {
 case "$EVENT" in
   SessionStart)
     write_new "started" "Session started" ""
+    # Capture TTY for terminal focus feature
+    HOOK_TTY=$(ps -o tty= -p $PPID 2>/dev/null | tr -d ' ')
+    if [ -n "$HOOK_TTY" ] && [ "$HOOK_TTY" != "??" ]; then
+      HOOK_TTY="/dev/$HOOK_TTY"
+      if [ -f "$SESSION_FILE" ]; then
+        tty_updated=$(jq -c --arg tty "$HOOK_TTY" '. + {tty:$tty}' "$SESSION_FILE" 2>/dev/null)
+        if [ -n "$tty_updated" ]; then
+          atomic_write "$SESSION_FILE" "$tty_updated"
+        fi
+      fi
+    fi
     log_activity "start" "Session started"
     ;;
 

@@ -1,6 +1,6 @@
 {
   "name": "claude-paws",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Cute session dashboard for Claude Code - monitor all your sessions with pixel mascots",
   "type": "module",
   "bin": {
