@@ -125,7 +125,7 @@ notify_macos() {
   local settings_file="$HOME/.claude/dashboard/settings.json"
   if [ -f "$settings_file" ]; then
     local enabled
-    enabled=$(jq -r '.macosNotifications // true' "$settings_file" 2>/dev/null)
+    enabled=$(jq -r 'if .macosNotifications == false then "false" else "true" end' "$settings_file" 2>/dev/null)
     [ "$enabled" = "false" ] && return
   fi
   osascript -e "display notification \"$2\" with title \"$1\" sound name \"Glass\"" 2>/dev/null &
