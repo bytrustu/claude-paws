@@ -122,6 +122,15 @@ log_activity() {
 }
 
 notify_macos() {
+  # Check if notifications are enabled in dashboard config
+  local config_file="$HOME/.claude/dashboard/config.json"
+  if [ -f "$config_file" ]; then
+    local notif_enabled
+    notif_enabled=$(jq -r '.notifications // true' "$config_file" 2>/dev/null)
+    if [ "$notif_enabled" = "false" ]; then
+      return 0
+    fi
+  fi
   osascript -e "display notification \"$2\" with title \"$1\" sound name \"Glass\"" 2>/dev/null &
 }
 
