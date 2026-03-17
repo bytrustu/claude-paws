@@ -92,7 +92,7 @@ export default function setup() {
 
   try {
     copyFileSync(HOOK_SOURCE, HOOK_DEST);
-    chmodSync(HOOK_DEST, 0o755);
+    try { chmodSync(HOOK_DEST, 0o755); } catch {}
     ok("session-tracker.sh installed");
   } catch (e) {
     warn(`Could not copy hook script: ${e.message}`);
@@ -142,4 +142,16 @@ export default function setup() {
 }
 
 // Run only when executed directly (not imported)
-const isMain = process.argv[1]?.endsWith("postinstall.mjs"); if (isMain) setup();
+const isMain = process.argv[1]?.endsWith("postinstall.mjs");
+if (isMain) {
+  if (process.platform === "win32") {
+    console.log("");
+    console.log("  \u{1F43E} claude-paws currently supports macOS and Linux.");
+    console.log("  Windows support (WSL) is coming soon.");
+    console.log("");
+    console.log("  If you're using WSL, run: paws setup");
+    console.log("");
+  } else {
+    setup();
+  }
+}
