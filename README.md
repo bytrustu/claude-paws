@@ -61,6 +61,8 @@ Claude Code 터미널 여러 개 띄워놓고 **"이 세션 뭐하고 있었지?
 - 외부 의존성 없이 **Node.js 내장 모듈만** 사용
 - 모든 데이터는 **로컬에서만** 처리돼요
 
+<br />
+
 ## 설치
 
 ```bash
@@ -68,6 +70,8 @@ npm install -g claude-paws
 ```
 
 Node.js 18 이상이면 돼요.
+
+<br />
 
 ## 사용법
 
@@ -90,6 +94,8 @@ paws --no-open
 
 http://localhost:3200 으로 접속하면 돼요.
 
+<br />
+
 ## 삭제
 
 ```bash
@@ -104,6 +110,8 @@ rm -rf ~/.claude/dashboard/
 ```
 
 `~/.claude/settings.json`에서 `session-tracker.sh` 관련 항목도 지워주면 끝이에요.
+
+<br />
 
 ## 라이선스
 
