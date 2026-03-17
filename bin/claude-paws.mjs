@@ -2,7 +2,7 @@
 import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
@@ -10,7 +10,7 @@ const command = args[0];
 
 function printBanner() {
   console.log("");
-  console.log("  \u{1F43E} paws v0.2.10");
+  console.log("  \u{1F43E} paws v0.2.11");
   console.log("  Session dashboard for Claude Code");
   console.log("");
 }
@@ -37,7 +37,7 @@ if (command === "help" || command === "--help" || command === "-h") {
 
 if (command === "setup") {
   const setupPath = join(__dirname, "..", "scripts", "postinstall.mjs");  
-  const mod = await import(setupPath); mod.default();
+  const mod = await import(pathToFileURL(setupPath)); mod.default();
   process.exit(0);
 }
 
@@ -53,7 +53,7 @@ if (command === "update") {
 }
 
 if (command === "status") {
-  const mod = await import(join(__dirname, "..", "scripts", "postinstall.mjs")); mod.checkStatus();
+  const mod = await import(pathToFileURL(join(__dirname, "..", "scripts", "postinstall.mjs"))); mod.checkStatus();
   process.exit(0);
 }
 
@@ -69,7 +69,7 @@ process.env.PORT = port;
 printBanner();
 
 const serverPath = join(__dirname, "..", "lib", "server.mjs");
-await import(serverPath);
+await import(pathToFileURL(serverPath));
 
 if (!noOpen) {
   setTimeout(() => {
