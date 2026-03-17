@@ -1,0 +1,33 @@
+name: Test Windows
+on:
+  workflow_dispatch:
+
+jobs:
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install claude-paws
+        run: npm install -g claude-paws@latest
+
+      - name: Test CLI help
+        run: paws --help
+
+      - name: Test server starts
+        shell: bash
+        run: |
+          paws --no-open &
+          sleep 3
+          curl -s http://localhost:3200 | head -c 100 && echo ""
+          curl -s http://localhost:3200/api/version
+          curl -s http://localhost:3200/api/settings
+          echo "Server OK"
+
+      - name: Test hook script
+        shell: bash
+        run: |
+          echo '{"hook_event_name":"Stop","session_id":"test-win","cwd":"/tmp/test","last_assistant_message":"done","stop_hook_active":true}' | node "$(npm root -g)/claude-paws/lib/hooks/session-tracker.mjs"
+          cat "$USERPROFILE/.claude/dashboard/active/test-win.json" || echo "Session file check"
