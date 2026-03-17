@@ -146,10 +146,8 @@ const isMain = process.argv[1]?.endsWith("postinstall.mjs");
 if (isMain) {
   if (process.platform === "win32") {
     console.log("");
-    console.log("  \u{1F43E} claude-paws currently supports macOS and Linux.");
-    console.log("  Windows support (WSL) is coming soon.");
-    console.log("");
-    console.log("  If you're using WSL, run: paws setup");
+    console.log("  \u{1F43E} claude-paws is currently supported on macOS and Linux only.");
+    console.log("  Windows support is not available yet.");
     console.log("");
   } else {
     setup();
