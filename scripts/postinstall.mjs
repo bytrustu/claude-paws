@@ -10,8 +10,9 @@ const HOOKS_DIR = join(CLAUDE_DIR, "hooks");
 const SETTINGS_FILE = join(CLAUDE_DIR, "settings.json");
 const DASHBOARD_DIR = join(CLAUDE_DIR, "dashboard");
 const ACTIVE_DIR = join(DASHBOARD_DIR, "active");
-const HOOK_SOURCE = join(__dirname, "..", "lib", "hooks", "session-tracker.sh");
-const HOOK_DEST = join(HOOKS_DIR, "session-tracker.sh");
+const HOOK_SOURCE = join(__dirname, "..", "lib", "hooks", "session-tracker.mjs");
+const HOOK_DEST = join(HOOKS_DIR, "session-tracker.mjs");
+const OLD_HOOK_DEST = join(HOOKS_DIR, "session-tracker.sh");
 
 const HOOK_EVENTS = [
   "SessionStart",
@@ -39,9 +40,9 @@ export function checkStatus() {
   ok("Claude Code directory found");
 
   if (existsSync(HOOK_DEST)) {
-    ok("session-tracker.sh installed");
+    ok("session-tracker.mjs installed");
   } else {
-    warn("session-tracker.sh not installed (run: claude-paws setup)");
+    warn("session-tracker.mjs not installed (run: paws setup)");
   }
 
   if (existsSync(SETTINGS_FILE)) {
@@ -93,7 +94,7 @@ export default function setup() {
   try {
     copyFileSync(HOOK_SOURCE, HOOK_DEST);
     try { chmodSync(HOOK_DEST, 0o755); } catch {}
-    ok("session-tracker.sh installed");
+    ok("session-tracker.mjs installed");
   } catch (e) {
     warn(`Could not copy hook script: ${e.message}`);
   }
@@ -111,9 +112,24 @@ export default function setup() {
 
   const hookEntry = [{
     matcher: "",
-    hooks: [{ type: "command", command: "~/.claude/hooks/session-tracker.sh" }],
+    hooks: [{ type: "command", command: "node ~/.claude/hooks/session-tracker.mjs" }],
   }];
 
+  // Remove old .sh hook references (migration)
+  let migrated = 0;
+  for (const event of HOOK_EVENTS) {
+    if (settings.hooks[event]) {
+      const before = settings.hooks[event].length;
+      settings.hooks[event] = settings.hooks[event].filter(h =>
+        !h.hooks?.some(hh => hh.command?.includes("session-tracker.sh"))
+      );
+      if (settings.hooks[event].length < before) migrated++;
+      if (settings.hooks[event].length === 0) delete settings.hooks[event];
+    }
+  }
+  if (migrated > 0) ok(`Migrated ${migrated} hooks from .sh to .mjs`);
+
+  // Register .mjs hooks
   let added = 0;
   for (const event of HOOK_EVENTS) {
     if (!settings.hooks[event]) {
@@ -121,7 +137,7 @@ export default function setup() {
       added++;
     } else {
       const hasOurs = settings.hooks[event].some((h) =>
-        h.hooks?.some((hh) => hh.command?.includes("session-tracker.sh"))
+        h.hooks?.some((hh) => hh.command?.includes("session-tracker.mjs"))
       );
       if (!hasOurs) {
         settings.hooks[event].push(hookEntry[0]);
@@ -136,20 +152,13 @@ export default function setup() {
   console.log("");
   log("Setup complete!");
   console.log("");
-  console.log("  Start:   claude-paws");
-  console.log("  Status:  claude-paws status");
+  console.log("  Start:   paws");
+  console.log("  Status:  paws status");
   console.log("");
 }
 
 // Run only when executed directly (not imported)
 const isMain = process.argv[1]?.endsWith("postinstall.mjs");
 if (isMain) {
-  if (process.platform === "win32") {
-    console.log("");
-    console.log("  \u{1F43E} claude-paws is currently supported on macOS and Linux only.");
-    console.log("  Windows support is not available yet.");
-    console.log("");
-  } else {
-    setup();
-  }
+  setup();
 }
