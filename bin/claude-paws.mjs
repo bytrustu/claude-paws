@@ -10,7 +10,7 @@ const command = args[0];
 
 function printBanner() {
   console.log("");
-  console.log("  \u{1F43E} paws v0.2.7");
+  console.log("  \u{1F43E} paws v0.2.8");
   console.log("  Session dashboard for Claude Code");
   console.log("");
 }
@@ -21,6 +21,7 @@ function printHelp() {
   console.log("    paws               Start the dashboard server");
   console.log("    paws setup         Install hooks into Claude Code");
   console.log("    paws status        Check if hooks are installed");
+  console.log("    paws update        Update to latest version");
   console.log("    paws help          Show this help message");
   console.log("");
   console.log("  Options:");
@@ -37,6 +38,17 @@ if (command === "help" || command === "--help" || command === "-h") {
 if (command === "setup") {
   const setupPath = join(__dirname, "..", "scripts", "postinstall.mjs");  
   const mod = await import(setupPath); mod.default();
+  process.exit(0);
+}
+
+if (command === "update") {
+  console.log("  Updating claude-paws...");
+  try {
+    execSync("npm install -g claude-paws@latest", { stdio: "inherit" });
+    console.log("\n  ✅ Updated successfully!");
+  } catch {
+    console.error("\n  ❌ Update failed");
+  }
   process.exit(0);
 }
 

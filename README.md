@@ -1,5 +1,12 @@
 # claude-paws
 
+> **v0.2.8 업데이트 안내** — 이번 버전부터 대시보드에서 자동 업데이트를 지원해요.
+> 이전 버전 사용자는 아래 명령어로 한 번만 업데이트해주세요.
+> ```bash
+> npm install -g claude-paws@latest
+> ```
+> 이후부터는 대시보드에서 새 버전이 있으면 클릭 한 번으로 업데이트할 수 있어요.
+
 <div align="center">
 
 <video src="https://github.com/user-attachments/assets/eab8be0e-f19c-4390-ad71-a4c7effdbc25" />
